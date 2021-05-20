@@ -14,38 +14,23 @@
             </thead>
             <tbody>
               <tr>
+                <% for(const figurine of bookmarks) {%> 
                 <td>
-                  <img class="img-thumbnail img-cart-list" src="/images/tifa.png" alt="">
+                  <img class="img-thumbnail img-cart-list" src="/images/<%= figurine.name.toLowerCase() %>.png" alt="">
                   <div class="item-description">
-                      <h5 class="item-title">Tifa</h5>
+                      <h5 class="item-title"><%= figurine.name %></h5>
                   </div>
                 </td>
 
                 <td>
-                  <p class="item-subtotal">$24.99</p>
+                  <p class="item-subtotal">$<%= figurine.price %></p>
                 </td>
 
                 <td>
-                  <a href="#">Enlever de la liste</a>
+                  <a href="/bookmarks/delete/<%= figurine.id %>">Enlever de la liste</a>
                 </td>
               </tr>
-
-              <tr>
-                <td>
-                  <img class="img-thumbnail img-cart-list" src="/images/cloud.png" alt="">
-                  <div class="item-description">
-                      <h5 class="item-title">Cloud</h5>
-                  </div>
-                </td>
-
-                <td>
-                  <p class="item-subtotal">$49.98</p>
-                </td>
-
-                <td>
-                  <a href="#">Enlever de la liste</a>
-                </td>
-              </tr>
+              <% } %> 
 
           </table>
 
