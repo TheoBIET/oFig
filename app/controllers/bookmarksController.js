@@ -27,7 +27,6 @@ const bookmarksController = {
 
     deleteBookmark: (req, res) => {
       const idFromUrl = parseInt(req.params.id, 10);
-
       // On va vouloir garder dans notre tableau de favoris tous les éléments SAUF celui dont l'id sera égal à idFromURL
       // La plus adaptée ici est d'utiliser la méthode filter des tableaux
       // Cette méthode va prendre en paramètre une fonction qui devra renvoyer :

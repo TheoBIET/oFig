@@ -24,6 +24,26 @@ const dataMapper = {
                     ? callback(null, result.rows[0])  
                     : callback(error)
         });
+    },
+    getReviews: (figurineId, callback) => {
+        // On prépare la requête pour se protéger d'une éventuelle injection SQL
+        const preparedQuery = {
+            text: 'SELECT * FROM review WHERE figurine_id=$1',
+            values: [figurineId]
+        }
+
+        // On envoie la requête au serveur de BDD
+        client.query(preparedQuery, (error, results) => {
+            if(error) {
+                // On prévient le contrôleur qu'une erreur s'est produite
+                callback(error);
+            }else {
+                // On formate les datas de façon à ce qu'elles soient prête à l'emploi
+                // On les renvoie au contrôleur
+                const reviews = results.rows;
+                callback(null, reviews)
+            }
+        });
     }
 }
 
