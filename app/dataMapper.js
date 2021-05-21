@@ -1,3 +1,4 @@
+const { response } = require('express');
 const client = require('./database');
 
 const dataMapper = {
@@ -7,14 +8,14 @@ const dataMapper = {
     // Si nous n'avons pas d'erreur mais des data, on utilisera cette fois le 2ème argument du callback
 
     getAllFigurines: callback => {
-        client.query('SELECT * FROM figurine', (error, result) => {
+        client.query('SELECT figurine.*, ROUND(AVG(review.note)) AS avg_note FROM figurine JOIN review ON figurine.id = review.figurine_id GROUP BY figurine.id', (error, result) => {
             error
                 ? callback(error)
                 : callback(null, result.rows);
         });
     },
     getOneFigurine: (id, callback) => {
-        client.query('SELECT * FROM figurine WHERE id=$1', [id], (error, result) => {
+        client.query('SELECT figurine.*, ROUND(AVG(review.note)) AS avg_note FROM figurine JOIN review ON figurine.id = review.figurine_id WHERE figurine.id=$1 GROUP BY figurine.id', [id], (error, result) => {
             error
                 ? callback(error)
                 // On teste la longueur de result.rows pour être sûr qu'on a bien récupéré un résultat suite à la requête
@@ -44,6 +45,31 @@ const dataMapper = {
                 callback(null, reviews)
             }
         });
+    },
+    getTotalFigurinesByCategory: (callback) => {
+        client.query('SELECT category, COUNT(*) AS total FROM figurine GROUP BY category',
+        (error, results) => {
+            if(error) {
+                callback(error);
+            }else {
+                const cumuls = results.rows;
+                callback(null, cumuls)
+            }
+        })
+    },
+    getAllFigurinesByCategory: (category, callback) => {
+        const preparedQuery = {
+            text: 'SELECT figurine.*, ROUND(AVG(review.note)) AS avg_note FROM figurine JOIN review ON figurine.id=review.figurine_id WHERE category=$1 GROUP BY figurine.id',
+            values: [category]
+        }
+        client.query(preparedQuery, (error, results) => {
+            if(error) {
+                callback(error)
+            }else {
+                const figurines = results.rows;
+                callback(null, figurines);
+            }
+        })
     }
 }
 

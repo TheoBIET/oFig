@@ -34,8 +34,9 @@
                             </p>
                             <p class="card-text"><%= figurine.description %></p>
                             <p class="card-text">
-                                Note moyenne : &#9733; &#9733; &#9733; &#9733;
-                                &#9734;
+                                Note moyenne : <%for(let i=0; i<5; i++){%>
+                                <%if(i < figurine.avg_note){%>&#9733;
+                                <%}else{%>&#9734; <%}%> <%}%>
                                 <br />
                                 <a
                                     href="#"
@@ -94,17 +95,12 @@
                     <h5>
                         <%= review.title %> &nbsp;
                         <small class="text-muted">
-                            <%for(let i=0; i<5; i++){%> 
-                            <%if(i < review.note){%>&#9733; 
-                            <%}else{%>&#9734; 
-                            <%}%>
-                            <%}%>
+                            <%for(let i=0; i<5; i++){%> <%if(i <
+                            review.note){%>&#9733; <%}else{%>&#9734; <%}%> <%}%>
                         </small>
                     </h5>
                     <p class="review-author">par <%= review.author %></p>
-                    <p>
-                      <%= review.message %>
-                    </p>
+                    <p><%= review.message %></p>
                 </section>
                 <hr />
                 <% } %>
